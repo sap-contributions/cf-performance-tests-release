@@ -1,0 +1,3 @@
+[submodule "src/cf-performance-tests"]
+	path = src/cf-performance-tests
+	url = https://github.com/cloudfoundry/cf-performance-tests
