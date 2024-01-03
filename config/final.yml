@@ -1,0 +1,5 @@
+name: cf-performance-tests
+blobstore:
+  provider: local
+  options:
+    blobstore_path: /tmp/cf-load-tests-blobs
