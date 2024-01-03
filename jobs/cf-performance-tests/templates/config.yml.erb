@@ -1,0 +1,33 @@
+api: "cloud-controller-ng.service.cf.internal:9022"
+use_http: true
+skip_ssl_validation: true
+cf_deployment_version: <%= p("cf_deployment_version") %>
+capi_version: <%= p("capi_version") %>
+users:
+  admin:
+    username: <%= p("users.admin.username") %>
+    password: <%= p("users.admin.password") %>
+database_type: <%= p("ccdb.db_scheme") %>
+
+<% ccdb_database_name=p("ccdb.databases").find { |db| db["tag"] == "cc" } %>
+<% ccdb_admin_role = p("ccdb.roles").find { |role| role["tag"] == "admin" } %>
+<% uaadb_database_name=p("uaadb.databases").find { |db| db["tag"] == "uaa" } %>
+<% uaadb_admin_role = p("uaadb.roles").find { |role| role["tag"] == "admin" } %>
+
+<% if p("ccdb.db_scheme") == "mysql" %>
+ccdb_connection="<%= ccdb_admin_role["name"] %>:<%= yaml_escape(ccdb_admin_role["password"]) %>@tcp(<%= p("ccdb.address") %>:<%= p("ccdb.port") %>)/<%= ccdb_database_name %>?multiStatements=true"
+uaadb_connection="<%= uaadb_admin_role["name"] %>:<%= yaml_escape(uaadb_admin_role["password"]) %>@tcp(<%= p("uaadb.address") %>:<%= p("uaadb.port") %>)/<%= uaadb_database_name %>?multiStatements=true"
+<% end %>
+
+<% if p("ccdb.db_scheme") == "postgres" %>
+ccdb_connection="postgres://<%= ccdb_admin_role["name"] %>:<%= yaml_escape(ccdb_admin_role["password"]) %>@<%= p("ccdb.address") %>:<%= p("ccdb.port") %>/<%= ccdb_database_name %>?sslmode=disable"
+uaadb_connection="postgres://<%= uaadb_admin_role["name"] %>:<%= yaml_escape(uaadb_admin_role["password"]) %>@<%= p("uaadb.address") %>:<%= p("ccdb.port") %>/<%= uaadb_database_name %>?sslmode=disable"
+<% end %>
+
+samples: <%= p("samples") %>
+basic_timeout: <%= p("basic_timeout") %>
+long_timeout: <%= p("long_timeout") %>
+large_page_size: <%= p("large_page_size") %>
+large_elements_filter: <%= p("large_elements_filter") %>
+
+results_folder: "/var/vcap/jobs/cf-performance-tests"

@@ -1,0 +1,39 @@
+---
+name: cf-performance-tests
+
+templates:
+  bin/run.erb: bin/run
+
+packages:
+- golang-1.21-linux
+
+properties:
+  test_suite_folder:
+    default: ""
+  cf_deployment_version:
+    description: "used for generated report"
+  capi_version:
+    description: "used for generated report"
+  large_page_size:
+    default: 500
+  large_elements_filter:
+    default: 100
+  samples:
+    default: 5
+  basic_timeout:
+    default: 60
+  long_timeout:
+    default: 180
+  ginkgo_timeout:
+    default: "3h"
+  users:
+    admin:
+      username:
+        description: "admin username"
+      password:
+        description: "admin password"
+    existing:
+      username:
+        description: "non-admin username"
+      password:
+        description: "non-admin password"

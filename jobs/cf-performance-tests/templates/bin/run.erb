@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+set -ex
+
+exec > >(tee -a /var/vcap/sys/log/cf-performance-tests/cf-performance-tests.stdout)
+exec 2> >(tee -a /var/vcap/sys/log/cf-performance-tests/cf-performance-tests.stderr)
+
+# TODO check if we need this
+# Increase some OS parameters, to prevent the errand VM being the bottleneck
+# ulimit -n 1000000
+# ulimit -u 1000000
+# sysctl net.ipv4.ip_local_port_range="15000 61000"
+
+source /var/vcap/packages/golang-1.21-linux/bosh/runtime.env
+
+pushd "../src" >/dev/null
+
+<% if_p("test_suite_folder") do |test_suite_folder| %>
+  echo -e "\nRunning tests in <%= test_suite_folder %>..."
+  go run github.com/onsi/ginkgo/v2/ginkgo run --timeout <%= p(ginkgo_timeout) %> --seed 1234 -r "<%= test_suite_folder %>"
+<% end.else do %>
+  echo -e "\nRunning all tests..."
+  go run github.com/onsi/ginkgo/v2/ginkgo run --timeout <%= p(ginkgo_timeout) %> --seed 1234 ./...
+<% end %>
+
+popd >/dev/null
+
+# TODO
+# tar zcvf load-test-results.tgz load-test-results/
