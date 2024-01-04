@@ -1,0 +1,5 @@
+---
+name: cf_performance_tests
+
+files:
+- cf-performance-tests/**/*

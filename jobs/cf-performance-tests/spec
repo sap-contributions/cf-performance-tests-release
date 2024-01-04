@@ -2,10 +2,18 @@
 name: cf-performance-tests
 
 templates:
+  config.yml.erb: config.yml
   bin/run.erb: bin/run
 
 packages:
 - golang-1.21-linux
+- cf_performance_tests
+
+consumes:
+- name: cloud_controller_db
+  type: cloud_controller_db
+- name: uaa_db
+  type: uaa_db
 
 properties:
   test_suite_folder:
