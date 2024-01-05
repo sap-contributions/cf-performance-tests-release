@@ -15,13 +15,13 @@ database_type: <%= link("cloud_controller_db").p("ccdb.db_scheme") %>
 <% uaadb_admin_role = link("uaa_db").p("uaadb.roles").find { |role| role["tag"] == "admin" } %>
 
 <% if link("cloud_controller_db").p("ccdb.db_scheme") == "mysql" %>
-ccdb_connection="<%= ccdb_admin_role["name"] %>:<%= ccdb_admin_role["password"] %>@tcp(<%= link("cloud_controller_db").p("ccdb.address") %>:<%= link("cloud_controller_db").p("ccdb.port") %>)/<%= ccdb_database["name"] %>?multiStatements=true"
-uaadb_connection="<%= uaadb_admin_role["name"] %>:<%= uaadb_admin_role["password"] %>@tcp(<%= link("uaa_db").p("uaadb.address") %>:<%= link("uaa_db").p("uaadb.port") %>)/<%= uaadb_database["name"] %>?multiStatements=true"
+ccdb_connection: "<%= ccdb_admin_role["name"] %>:<%= ccdb_admin_role["password"] %>@tcp(<%= link("cloud_controller_db").p("ccdb.address") %>:<%= link("cloud_controller_db").p("ccdb.port") %>)/<%= ccdb_database["name"] %>?multiStatements=true"
+uaadb_connection: "<%= uaadb_admin_role["name"] %>:<%= uaadb_admin_role["password"] %>@tcp(<%= link("uaa_db").p("uaadb.address") %>:<%= link("uaa_db").p("uaadb.port") %>)/<%= uaadb_database["name"] %>?multiStatements=true"
 <% end %>
 
 <% if link("cloud_controller_db").p("ccdb.db_scheme") == "postgres" %>
-ccdb_connection="postgres://<%= ccdb_admin_role["name"] %>:<%= ccdb_admin_role["password"] %>@<%= link("cloud_controller_db").p("ccdb.address") %>:<%= link("cloud_controller_db").p("ccdb.port") %>/<%= ccdb_database["name"] %>?sslmode=disable"
-uaadb_connection="postgres://<%= uaadb_admin_role["name"] %>:<%= uaadb_admin_role["password"] %>@<%= link("uaa_db").p("uaadb.address") %>:<%= link("uaa_db").p("uaadb.port") %>/<%= uaadb_database["name"] %>?sslmode=disable"
+ccdb_connection: "postgres://<%= ccdb_admin_role["name"] %>:<%= ccdb_admin_role["password"] %>@<%= link("cloud_controller_db").p("ccdb.address") %>:<%= link("cloud_controller_db").p("ccdb.port") %>/<%= ccdb_database["name"] %>?sslmode=disable"
+uaadb_connection: "postgres://<%= uaadb_admin_role["name"] %>:<%= uaadb_admin_role["password"] %>@<%= link("uaa_db").p("uaadb.address") %>:<%= link("uaa_db").p("uaadb.port") %>/<%= uaadb_database["name"] %>?sslmode=disable"
 <% end %>
 
 samples: <%= p("samples") %>
@@ -30,4 +30,4 @@ long_timeout: <%= p("long_timeout") %>
 large_page_size: <%= p("large_page_size") %>
 large_elements_filter: <%= p("large_elements_filter") %>
 
-results_folder: "/var/vcap/jobs/cf-performance-tests"
+results_folder: "/var/vcap/jobs/cf-performance-tests/results"

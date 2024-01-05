@@ -2,8 +2,6 @@
 
 set -ex
 
-exit 0
-
 exec > >(tee -a /var/vcap/sys/log/cf-performance-tests/cf-performance-tests.stdout)
 exec 2> >(tee -a /var/vcap/sys/log/cf-performance-tests/cf-performance-tests.stderr)
 
@@ -14,9 +12,13 @@ exec 2> >(tee -a /var/vcap/sys/log/cf-performance-tests/cf-performance-tests.std
 # sysctl net.ipv4.ip_local_port_range="15000 61000"
 
 source /var/vcap/packages/golang-1.21-linux/bosh/runtime.env
+export PATH=/var/vcap/jobs/cf-performance-tests/packages/cf-cli-8-linux/bin:$PATH
 
-pushd "/var/vcap/jobs/cf-performance-tests/src" >/dev/null
+cp /var/vcap/jobs/cf-performance-tests/config.yml /var/vcap/jobs/cf-performance-tests/packages/cf_performance_tests
+mkdir -p /var/vcap/jobs/cf-performance-tests/results
+rm -rf /var/vcap/jobs/cf-performance-tests/results/*
 
+pushd /var/vcap/jobs/cf-performance-tests/packages/cf_performance_tests >/dev/null
 <% if_p("test_suite_folder") do |test_suite_folder| %>
   echo -e "\nRunning tests in <%= test_suite_folder %>..."
   go run github.com/onsi/ginkgo/v2/ginkgo run --timeout <%= p("ginkgo_timeout") %> --seed 1234 -r "<%= test_suite_folder %>"
@@ -24,8 +26,6 @@ pushd "/var/vcap/jobs/cf-performance-tests/src" >/dev/null
   echo -e "\nRunning all tests..."
   go run github.com/onsi/ginkgo/v2/ginkgo run --timeout <%= p("ginkgo_timeout") %> --seed 1234 ./...
 <% end %>
-
 popd >/dev/null
 
-# TODO
-# tar zcvf load-test-results.tgz load-test-results/
+tar zcvf /tmp/performance-test-results.tgz /var/vcap/jobs/cf-performance-tests/results/

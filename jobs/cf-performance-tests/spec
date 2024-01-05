@@ -7,6 +7,7 @@ templates:
 
 packages:
 - golang-1.21-linux
+- cf-cli-8-linux
 - cf_performance_tests
 
 consumes:
@@ -17,7 +18,7 @@ consumes:
 
 properties:
   test_suite_folder:
-    default: ""
+    description: "execute only tests from the given folder (default: all tests)"
   cf_deployment_version:
     description: "used for generated report"
   capi_version:
@@ -29,9 +30,9 @@ properties:
   samples:
     default: 5
   basic_timeout:
-    default: 60
+    default: "60s"
   long_timeout:
-    default: 180
+    default: "180s"
   ginkgo_timeout:
     default: "3h"
   users:
