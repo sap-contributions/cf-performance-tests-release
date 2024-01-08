@@ -20,8 +20,8 @@ uaadb_connection: "<%= uaadb_admin_role["name"] %>:<%= uaadb_admin_role["passwor
 <% end %>
 
 <% if link("cloud_controller_db").p("ccdb.db_scheme") == "postgres" %>
-ccdb_connection: "postgres://<%= ccdb_admin_role["name"] %>:<%= ccdb_admin_role["password"] %>@<%= link("cloud_controller_db").p("ccdb.address") %>:<%= link("cloud_controller_db").p("ccdb.port") %>/<%= ccdb_database["name"] %>?sslmode=disable"
-uaadb_connection: "postgres://<%= uaadb_admin_role["name"] %>:<%= uaadb_admin_role["password"] %>@<%= link("uaa_db").p("uaadb.address") %>:<%= link("uaa_db").p("uaadb.port") %>/<%= uaadb_database["name"] %>?sslmode=disable"
+ccdb_connection: "postgres://<%= ccdb_admin_role["name"] %>:<%= ccdb_admin_role["password"] %>@sql-db.service.cf.internal:<%= link("cloud_controller_db").p("ccdb.port") %>/<%= ccdb_database["name"] %>?sslmode=disable"
+uaadb_connection: "postgres://<%= uaadb_admin_role["name"] %>:<%= uaadb_admin_role["password"] %>@sql-db.service.cf.internal:<%= link("uaa_db").p("uaadb.port") %>/<%= uaadb_database["name"] %>?sslmode=disable"
 <% end %>
 
 samples: <%= p("samples") %>
