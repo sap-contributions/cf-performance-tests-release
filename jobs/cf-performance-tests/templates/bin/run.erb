@@ -5,12 +5,6 @@ set -ex
 exec > >(tee -a /var/vcap/sys/log/cf-performance-tests/cf-performance-tests.stdout)
 exec 2> >(tee -a /var/vcap/sys/log/cf-performance-tests/cf-performance-tests.stderr)
 
-# TODO check if we need this
-# Increase some OS parameters, to prevent the errand VM being the bottleneck
-# ulimit -n 1000000
-# ulimit -u 1000000
-# sysctl net.ipv4.ip_local_port_range="15000 61000"
-
 source /var/vcap/packages/golang-1.21-linux/bosh/runtime.env
 export PATH=/var/vcap/jobs/cf-performance-tests/packages/cf-cli-8-linux/bin:$PATH
 
