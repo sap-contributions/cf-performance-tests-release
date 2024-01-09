@@ -13,8 +13,13 @@ rm -rf /tmp/results/*
 
 pushd /var/vcap/jobs/cf-performance-tests/packages/cf_performance_tests >/dev/null
 <% if_p("test_suite_folder") do |test_suite_folder| %>
-  echo -e "\nRunning tests in <%= test_suite_folder %>..."
-  go run github.com/onsi/ginkgo/v2/ginkgo run --timeout <%= p("ginkgo_timeout") %> --seed 1234 -r "<%= test_suite_folder %>"
+  <% if test_suite_folder.empty? %>
+    echo -e "\nRunning all tests..."
+    go run github.com/onsi/ginkgo/v2/ginkgo run --timeout <%= p("ginkgo_timeout") %> --seed 1234 ./...
+  <% else %>
+    echo -e "\nRunning tests in <%= test_suite_folder %>..."
+    go run github.com/onsi/ginkgo/v2/ginkgo run --timeout <%= p("ginkgo_timeout") %> --seed 1234 -r "<%= test_suite_folder %>"
+  <% end %>
 <% end.else do %>
   echo -e "\nRunning all tests..."
   go run github.com/onsi/ginkgo/v2/ginkgo run --timeout <%= p("ginkgo_timeout") %> --seed 1234 ./...
