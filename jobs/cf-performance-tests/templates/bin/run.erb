@@ -9,8 +9,7 @@ source /var/vcap/packages/golang-1.21-linux/bosh/runtime.env
 export PATH=/var/vcap/jobs/cf-performance-tests/packages/cf-cli-8-linux/bin:$PATH
 
 cp /var/vcap/jobs/cf-performance-tests/config.yml /var/vcap/jobs/cf-performance-tests/packages/cf_performance_tests
-mkdir -p /var/vcap/jobs/cf-performance-tests/results
-rm -rf /var/vcap/jobs/cf-performance-tests/results/*
+rm -rf /tmp/results/*
 
 pushd /var/vcap/jobs/cf-performance-tests/packages/cf_performance_tests >/dev/null
 <% if_p("test_suite_folder") do |test_suite_folder| %>
@@ -22,4 +21,6 @@ pushd /var/vcap/jobs/cf-performance-tests/packages/cf_performance_tests >/dev/nu
 <% end %>
 popd >/dev/null
 
-tar zcvf /tmp/results.tar.gz /var/vcap/jobs/cf-performance-tests/results/
+pushd /tmp >/dev/null
+  tar zcvf results.tar.gz ./results
+popd >/dev/null

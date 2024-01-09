@@ -46,3 +46,5 @@ properties:
         description: "non-admin username"
       password:
         description: "non-admin password"
+  results_folder:
+    description: "must match: /tmp/results/(rails|go)/(mysql|postgres)/results/"
