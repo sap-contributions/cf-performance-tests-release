@@ -1,5 +1,5 @@
 name: cf-performance-tests
 blobstore:
-  provider: local
+  provider: gcs
   options:
-    blobstore_path: /tmp/cf-performance-tests-blobs
+    bucket_name: cf-performance-tests-release-blobs
